@@ -1,6 +1,7 @@
-import axios from 'axios';
 import React, { Component } from 'react';
+import { getArticleById } from '../api';
 import ArticleComments from './ArticleComments';
+import VoteUpdater from './VoteUpdater';
 
 
 
@@ -12,10 +13,10 @@ class ArticleContent extends Component {
   }
 
   componentDidMount() {
-    axios.get(`https://stephen-fe-nc-news.herokuapp.com/api/articles/${this.props.article_id}`).then(({ data: { article } }) => {
-      this.setState({ article, isLoading: false })
-    })
-
+    getArticleById(this.props.article_id)
+      .then(({ data: { article } }) => {
+        this.setState({ article, isLoading: false })
+      })
   }
 
   render() {
@@ -24,6 +25,7 @@ class ArticleContent extends Component {
         <h4>{this.state.article.title}</h4>
         <p>{this.state.article.body}</p>
         <ArticleComments article_id={this.props.article_id} />
+        <VoteUpdater votes={this.state.article.votes} article_id={this.state.article.article_id} />
       </>
     )
   }

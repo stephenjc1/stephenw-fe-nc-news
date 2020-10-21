@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { Component } from 'react';
 import { Link } from "@reach/router";
 import VoteUpdater from './VoteUpdater';
+import { getArticles } from '../api';
 
 class ArticleList extends Component {
   state = {
@@ -14,9 +14,10 @@ class ArticleList extends Component {
 
   fetchArticles = () => {
     console.log("fetching")
-    axios.get('https://stephen-fe-nc-news.herokuapp.com/api/articles', { params: { topic: this.props.topic_slug, sort_by: this.state.sort_by, order: this.state.order } }).then(({ data: { articles } }) => {
-      this.setState({ articles, isLoading: false })
-    })
+    getArticles(this.props.topic_slug, this.state.sort_by, this.state.order)
+      .then(({ data: { articles } }) => {
+        this.setState({ articles, isLoading: false })
+      })
   }
 
   componentDidMount() {

@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, { Component } from 'react';
+import { increaseVotesById } from '../api';
 
 class VoteUpdater extends Component {
   state = {
@@ -14,7 +14,8 @@ class VoteUpdater extends Component {
     this.setState((currentState) => {
       return { userVotes: currentState.userVotes + voteValue }
     });
-    axios.patch(`https://stephen-fe-nc-news.herokuapp.com/api/articles/${this.props.article_id}`, { inc_votes: voteValue }).catch(() => {
+
+    increaseVotesById(this.props.article_id, voteValue).catch(() => {
       this.setState((currentState) => {
         return { userVotes: currentState.userVotes - voteValue }
       })
