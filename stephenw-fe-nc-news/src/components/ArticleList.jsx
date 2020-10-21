@@ -8,10 +8,13 @@ class ArticleList extends Component {
     articles: [],
     articleBody: "",
     isLoading: true,
+    sort_by: "",
+    order: "desc"
   }
 
   fetchArticles = () => {
-    axios.get('https://stephen-fe-nc-news.herokuapp.com/api/articles', { params: { topic: this.props.topic_slug } }).then(({ data: { articles } }) => {
+    console.log("fetching")
+    axios.get('https://stephen-fe-nc-news.herokuapp.com/api/articles', { params: { topic: this.props.topic_slug, sort_by: this.state.sort_by, order: this.state.order } }).then(({ data: { articles } }) => {
       this.setState({ articles, isLoading: false })
     })
   }
@@ -21,9 +24,19 @@ class ArticleList extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.topic_slug !== this.props.topic_slug) {
+    console.log("updating");
+    if (prevProps.topic_slug !== this.props.topic_slug || prevState.sort_by !== this.state.sort_by)
       this.fetchArticles();
-    }
+
+  }
+
+
+  sortByAuthor = () => {
+    this.setState(() => {
+      return {
+        sort_by: "author",
+      }
+    })
   }
 
   render() {
@@ -31,18 +44,15 @@ class ArticleList extends Component {
     if (this.state.isLoading) return <p>Articles are loading up....</p>;
     return (
       <>
+        <button onClick={this.sortByAuthor}>
+          sort by author
+          </button>
         <main>
           {articles.map(article => {
             return <Link to={`/articles/${article.article_id}`} key={article.article_id}>
               <ul>{article.title}</ul> </Link>
           })}
         </main>
-        <section>
-
-        </section>
-        {/* <Router>
-          <ArticleContent path="/:article_id" />
-        </Router> */}
       </>
     );
   }
