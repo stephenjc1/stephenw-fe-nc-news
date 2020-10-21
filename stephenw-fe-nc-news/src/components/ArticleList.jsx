@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { Link } from "@reach/router";
-
+import VoteUpdater from './VoteUpdater';
 
 class ArticleList extends Component {
   state = {
@@ -25,11 +25,10 @@ class ArticleList extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     console.log("updating");
-    if (prevProps.topic_slug !== this.props.topic_slug || prevState.sort_by !== this.state.sort_by)
+    if (prevProps.topic_slug !== this.props.topic_slug || prevState.sort_by !== this.state.sort_by || prevState.order !== this.state.order)
       this.fetchArticles();
 
   }
-
 
   sortByAuthor = () => {
     this.setState(() => {
@@ -37,6 +36,22 @@ class ArticleList extends Component {
         sort_by: "author",
       }
     })
+  }
+
+  toggleOrder = (event) => {
+    if (event.target.value === "desc")
+      this.setState(() => {
+        return {
+          order: "asc",
+        }
+      })
+    else (
+      this.setState(() => {
+        return {
+          order: "desc",
+        }
+      })
+    )
   }
 
   render() {
@@ -47,12 +62,21 @@ class ArticleList extends Component {
         <button onClick={this.sortByAuthor}>
           sort by author
           </button>
-        <main>
+        <button onClick={this.toggleOrder} value={this.state.order}>
+          order asc/desc
+          </button>
+        <section>
           {articles.map(article => {
-            return <Link to={`/articles/${article.article_id}`} key={article.article_id}>
-              <ul>{article.title}</ul> </Link>
+            return (
+              <>
+                <Link to={`/articles/${article.article_id}`} key={article.article_id}>
+                  <ul>{article.title}</ul>
+                </Link>
+                <VoteUpdater votes={article.votes} article_id={article.article_id} />
+              </>
+            )
           })}
-        </main>
+        </section>
       </>
     );
   }
