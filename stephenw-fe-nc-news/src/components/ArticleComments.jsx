@@ -1,5 +1,8 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+// import CommentAdder from './CommentAdder';
+import CommentAdder from './CommentAdder.jsx';
+
 
 class ArticleComments extends Component {
 
@@ -13,18 +16,27 @@ class ArticleComments extends Component {
       this.setState({ comments, isLoading: false })
     })
   }
+
+  updateCommentsList = (comment) => {
+    this.setState((currState) => ({
+      comments: [comment, ...currState.comments],
+    }))
+  }
+
+
   render() {
     const { comments } = this.state
     return (
       <>
         <h3>COMMENTS</h3>
-        <main>
+        <ul>
           {comments.map(comment => {
             return <li key={comment.comment_id}>
               {comment.body}
             </li>
           })}
-        </main>
+        </ul>
+        <CommentAdder updateCommentsList={this.updateCommentsList} article_id={this.props.article_id} />
       </>
     );
   }

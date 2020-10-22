@@ -17,6 +17,9 @@ export const increaseVotesById = (article_id, voteValue) => {
 
 }
 
+export const postComment = (newComment, article_id) => {
+  return instance.post(`articles/${article_id}/comments`, newComment)
+}
 
 
 

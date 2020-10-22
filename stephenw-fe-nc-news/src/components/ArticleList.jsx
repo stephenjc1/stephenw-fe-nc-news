@@ -77,18 +77,18 @@ class ArticleList extends Component {
         <button onClick={this.toggleOrder} value={this.state.order}>
           order asc/desc
           </button>
-        <section>
+        <ul>
           {articles.map(article => {
             return (
-              <>
+              <li key={article.article_id}>
                 <Link to={`/articles/${article.article_id}`} key={article.article_id}>
-                  <ul>{article.title}</ul>
+                  <p>{article.title}</p>
                 </Link>
                 <VoteUpdater votes={article.votes} article_id={article.article_id} />
-              </>
+              </li>
             )
           })}
-        </section>
+        </ul>
       </>
     );
   }
