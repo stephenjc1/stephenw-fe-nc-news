@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from "@reach/router";
 import VoteUpdater from './VoteUpdater';
 import { getArticles } from '../api';
+import Loader from './Loader';
+import ErrorDisplay from './ErrorDisplay';
 
 class ArticleList extends Component {
   state = {
@@ -9,7 +11,8 @@ class ArticleList extends Component {
     articleBody: "",
     isLoading: true,
     sort_by: "",
-    order: "desc"
+    order: "desc",
+    error: false
   }
 
   fetchArticles = () => {
@@ -17,6 +20,12 @@ class ArticleList extends Component {
     getArticles(this.props.topic_slug, this.state.sort_by, this.state.order)
       .then(({ data: { articles } }) => {
         this.setState({ articles, isLoading: false })
+      })
+      .catch(({ response }) => {
+        console.dir(response);
+        this.setState({
+          error: { status: response.status, message: response.data.msg }
+        })
       })
   }
 
@@ -28,7 +37,6 @@ class ArticleList extends Component {
     console.log("updating");
     if (prevProps.topic_slug !== this.props.topic_slug || prevState.sort_by !== this.state.sort_by || prevState.order !== this.state.order)
       this.fetchArticles();
-
   }
 
   sortByAuthor = () => {
@@ -56,8 +64,11 @@ class ArticleList extends Component {
   }
 
   render() {
-    const { articles } = this.state
-    if (this.state.isLoading) return <p>Articles are loading up....</p>;
+    const { articles, isLoading, error } = this.state
+    if (error) return (
+      <ErrorDisplay {...error} />
+    );
+    if (isLoading) return <Loader />
     return (
       <>
         <button onClick={this.sortByAuthor}>

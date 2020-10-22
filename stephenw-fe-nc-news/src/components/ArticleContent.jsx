@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getArticleById } from '../api';
 import ArticleComments from './ArticleComments';
+import Loader from './Loader';
 import VoteUpdater from './VoteUpdater';
 
 
@@ -20,12 +21,14 @@ class ArticleContent extends Component {
   }
 
   render() {
+    const { article, isLoading } = this.state
+    if (isLoading) return <Loader />
     return (
       <>
-        <h4>{this.state.article.title}</h4>
-        <p>{this.state.article.body}</p>
+        <h4>{article.title}</h4>
+        <p>{article.body}</p>
         <ArticleComments article_id={this.props.article_id} />
-        <VoteUpdater votes={this.state.article.votes} article_id={this.state.article.article_id} />
+        <VoteUpdater votes={article.votes} article_id={article.article_id} />
       </>
     )
   }
