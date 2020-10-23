@@ -35,7 +35,6 @@ class ArticleList extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("updating");
     const newTopic = prevProps.topic_slug !== this.props.topic_slug;
     const newSort = prevState.sort_by !== this.state.sort_by
     const newOrder = prevState.order !== this.state.order

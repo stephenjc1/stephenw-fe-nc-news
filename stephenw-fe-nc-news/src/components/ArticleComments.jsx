@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import CommentAdder from './CommentAdder.jsx';
-// import loggedInUsername from '../utils/utils';
+import loggedInUsername from '../utils/utils';
 
 
 class ArticleComments extends Component {
@@ -24,19 +24,23 @@ class ArticleComments extends Component {
   }
 
   deleteComment = (commentIdToDelete) => {
-    const newComments = this.state.comments.filter(comment => {
-      return comment.comment_id !== commentIdToDelete
-    })
-    this.setState(() => {
-      return { comments: newComments }
-    });
-
-    axios.delete(`https://stephen-fe-nc-news.herokuapp.com/api/comments/${commentIdToDelete}`).catch(() => {
+    axios.delete(`https://stephen-fe-nc-news.herokuapp.com/api/comments/${commentIdToDelete}`).then(() => {
       this.setState((prevState) => {
-        return prevState
+        const newComments = prevState.comments.filter(comment => {
+          return comment.comment_id !== commentIdToDelete
+        })
+        return { comments: newComments }
+      });
+    }).catch(() => {
+      this.setState((prevState) => {
+        return prevState;
       })
     })
   }
+
+  // componentDidUpdate(prevState) {
+  //   if(prevState.comments !== )
+  // }
 
   render() {
     const { comments } = this.state
@@ -47,8 +51,7 @@ class ArticleComments extends Component {
           {comments.map(comment => {
             return <li key={comment.comment_id}>
               <p> {comment.body} </p>
-              <button
-                onClick={() => this.deleteComment(comment.comment_id)}
+              <button disabled={comment.author !== loggedInUsername} onClick={() => this.deleteComment(comment.comment_id)}
               >Delete Comment</button>
             </li>
           })}
@@ -58,8 +61,5 @@ class ArticleComments extends Component {
     );
   }
 }
-
-// disabled = { comment.username !== loggedInUsername }
-
 
 export default ArticleComments;
