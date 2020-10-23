@@ -12,7 +12,8 @@ class ArticleList extends Component {
     isLoading: true,
     sort_by: "",
     order: "desc",
-    error: false
+    error: false,
+    page: 1
   }
 
   fetchArticles = () => {
@@ -35,8 +36,13 @@ class ArticleList extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     console.log("updating");
-    if (prevProps.topic_slug !== this.props.topic_slug || prevState.sort_by !== this.state.sort_by || prevState.order !== this.state.order)
+    const newTopic = prevProps.topic_slug !== this.props.topic_slug;
+    const newSort = prevState.sort_by !== this.state.sort_by
+    const newOrder = prevState.order !== this.state.order
+    const newPage = prevState.page !== this.state.page;
+    if (newTopic || newSort || newOrder || newPage) {
       this.fetchArticles();
+    }
   }
 
   sortByAuthor = () => {
@@ -63,8 +69,13 @@ class ArticleList extends Component {
     )
   }
 
+  setPage = (newPage) => {
+    this.setState({ page: newPage });
+  }
+
+
   render() {
-    const { articles, isLoading, error } = this.state
+    const { articles, isLoading, error, page } = this.state
     if (error) return (
       <ErrorDisplay {...error} />
     );
@@ -89,6 +100,11 @@ class ArticleList extends Component {
             )
           })}
         </ul>
+        <section>
+          <button onClick={() => this.setPage(page - 1)}>{'<'}</button>
+          <p>{page}</p>
+          <button onClick={() => this.setPage(page + 1)}>{'>'}</button>
+        </section>
       </>
     );
   }

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-// import CommentAdder from './CommentAdder';
 import CommentAdder from './CommentAdder.jsx';
+// import loggedInUsername from '../utils/utils';
 
 
 class ArticleComments extends Component {
@@ -23,6 +23,20 @@ class ArticleComments extends Component {
     }))
   }
 
+  deleteComment = (commentIdToDelete) => {
+    const newComments = this.state.comments.filter(comment => {
+      return comment.comment_id !== commentIdToDelete
+    })
+    this.setState(() => {
+      return { comments: newComments }
+    });
+
+    axios.delete(`https://stephen-fe-nc-news.herokuapp.com/api/comments/${commentIdToDelete}`).catch(() => {
+      this.setState((prevState) => {
+        return prevState
+      })
+    })
+  }
 
   render() {
     const { comments } = this.state
@@ -32,7 +46,10 @@ class ArticleComments extends Component {
         <ul>
           {comments.map(comment => {
             return <li key={comment.comment_id}>
-              {comment.body}
+              <p> {comment.body} </p>
+              <button
+                onClick={() => this.deleteComment(comment.comment_id)}
+              >Delete Comment</button>
             </li>
           })}
         </ul>
@@ -41,5 +58,8 @@ class ArticleComments extends Component {
     );
   }
 }
+
+// disabled = { comment.username !== loggedInUsername }
+
 
 export default ArticleComments;
