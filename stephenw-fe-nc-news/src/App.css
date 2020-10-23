@@ -1,6 +1,25 @@
+body {
+  background: current
+}
+
 .App {
   display: flex;
-  justify-content: center;
+}
+
+.article-card {
+border: 1px solid #BA1F31;
+background: white;
+border-radius: 15px;
+padding: 2rem 4rem;
+margin: 1rem 0;
+border-width: medium;
+}
+
+.nav-buttons {
+  background-color: #4CAF50; 
+  border: 1px solid green; 
+  color: white; 
+  padding: 10px 24px;
 }
 
 nav {
@@ -11,6 +30,7 @@ nav {
   background-color: #202829;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
+
 .navLinks {
   display: flex;
   justify-content: space-around;
@@ -20,7 +40,7 @@ nav {
   list-style: none;
 }
 .navLinks a {
-  color: rgb(28, 56, 56);
+  color: rgb(29, 199, 23);
   text-decoration: none;
   align-items: center;
   text-transform: uppercase;
@@ -33,3 +53,13 @@ nav {
   max-width: 300px;
   position: left;
 }
+
+
+
+ /* justify-content: center;  */
+
+  /* text-align: center;
+  align-items: center;
+  flex-direction: column; */
+
+  /* box-shadow: 2px 2px 5px 0px rgba(14, 69, 250, 0.863) */

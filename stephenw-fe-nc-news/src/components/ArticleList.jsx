@@ -53,20 +53,14 @@ class ArticleList extends Component {
   }
 
   toggleOrder = (event) => {
-    if (event.target.value === "desc")
-      this.setState(() => {
-        return {
-          order: "asc",
-        }
-      })
-    else (
-      this.setState(() => {
-        return {
-          order: "desc",
-        }
-      })
-    )
+
+    this.setState((currentState) => {
+      return {
+        order: currentState.order === "asc" ? "desc" : "asc",
+      }
+    })
   }
+
 
   setPage = (newPage) => {
     this.setState({ page: newPage });
@@ -90,12 +84,14 @@ class ArticleList extends Component {
         <ul>
           {articles.map(article => {
             return (
-              <li key={article.article_id}>
-                <Link to={`/articles/${article.article_id}`} key={article.article_id}>
-                  <p>{article.title}</p>
-                </Link>
-                <VoteUpdater votes={article.votes} article_id={article.article_id} />
-              </li>
+              <section className="article-card" key={article.article_id}>
+                <li key={article.article_id}>
+                  <Link to={`/articles/${article.article_id}`} key={article.article_id}>
+                    <p>{article.title}</p>
+                  </Link>
+                  <VoteUpdater votes={article.votes} article_id={article.article_id} />
+                </li>
+              </section>
             )
           })}
         </ul>
@@ -110,3 +106,37 @@ class ArticleList extends Component {
 }
 
 export default ArticleList;
+
+
+// toggleOrder = (event) => {
+//   if (event.target.value === "desc")
+//     this.setState(() => {
+//       return {
+//         order: "asc",
+//       }
+//     })
+//   else (
+//     this.setState(() => {
+//       return {
+//         order: "desc",
+//       }
+//     })
+//   )
+// }
+
+
+// {
+//   if (event.target.value === "desc")
+//     this.setState(() => {
+//       return {
+//         order: "asc",
+//       }
+//     })
+//   else (
+//     this.setState(() => {
+//       return {
+//         order: "desc",
+//       }
+//     })
+//   )
+// }

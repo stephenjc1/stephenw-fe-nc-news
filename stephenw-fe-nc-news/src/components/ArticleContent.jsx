@@ -24,12 +24,12 @@ class ArticleContent extends Component {
     const { article, isLoading } = this.state
     if (isLoading) return <Loader />
     return (
-      <>
+      <section>
         <h4>{article.title}</h4>
         <p>{article.body}</p>
         <ArticleComments article_id={this.props.article_id} />
         <VoteUpdater votes={article.votes} article_id={article.article_id} />
-      </>
+      </section>
     )
   }
 }
